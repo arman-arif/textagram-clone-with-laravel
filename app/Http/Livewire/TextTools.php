@@ -106,6 +106,16 @@ class TextTools extends Component
         $this->string = Tools::text()->extractNumbers($this->string);
     }
 
+    public function morseToText()
+    {
+        $this->string = Tools::text()->morseToText($this->string);
+    }
+
+    public function textToMorse()
+    {
+        $this->string = Tools::text()->textToMorse($this->string);
+    }
+
     public function render()
     {
         return view('livewire.text-tools');

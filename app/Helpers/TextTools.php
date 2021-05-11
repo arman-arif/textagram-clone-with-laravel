@@ -8,66 +8,53 @@ use Illuminate\Support\Str;
 
 class TextTools
 {
-    public function lowerCase($str)
-    {
-        return Str::lower($str);
-    }
 
-    public function upperCase($str)
-    {
-        return Str::upper($str);
-    }
+    private static $mosreLibrary = array(
+        '.-'    => 'A',
+        '-...'  => 'B',
+        '-.-.'  => 'C',
+        '-..'   => 'D',
+        '.'     => 'E',
+        '..-.'  => 'F',
+        '--.'   => 'G',
+        '....'  => 'H',
+        '..'    => 'I',
+        '.---'  => 'J',
+        '-.-'   => 'K',
+        '.-..'  => 'L',
+        '--'    => 'M',
+        '-.'    => 'N',
+        '---'   => 'O',
+        '.--.'  => 'P',
+        '--.-'  => 'Q',
+        '.-.'   => 'R',
+        '...'   => 'S',
+        '-'     => 'T',
+        '..-'   => 'U',
+        '...-'  => 'V',
+        '.--'   => 'W',
+        '-..-'  => 'X',
+        '-.--'  => 'Y',
+        '--..'  => 'Z',
+        '.----' => '1',
+        '..---' => '2',
+        '...--' => '3',
+        '....-' => '4',
+        '.....' => '5',
+        '-....' => '6',
+        '--...' => '7',
+        '---..' => '8',
+        '----.' => '9',
+        '-----' => '0',
+        '.-.-.-' => '.',
+        '--..--' => ',',
+        '..--..' => '?',
+        '-..-.' => '/',
+        '  '     => ' '
+    );
 
-    public function titleCase($str)
-    {
-        $smallWordsArray = array('of', 'a', 'the', 'and', 'an', 'or', 'nor', 'but', 'is', 'if', 'then', 'else', 'when', 'at', 'from', 'by', 'on', 'off', 'for', 'in', 'to', 'into', 'with', 'it', 'as');
-
-        $str = strtolower($str);
-        // Split the string into separate words
-        $words = explode(' ', $str);
-
-        foreach ($words as $key => $word) {
-
-            // If this word is the first, or it's not one of our small words, capitalise it
-            // with ucwords().
-            if ($key == 0 or !in_array(strip_tags($word), $smallWordsArray)) {
-                $old = strip_tags($word);
-                $new = ucfirst($old);
-                $words[$key] = str_replace($old, $new, $word);
-            }
-        }
-
-        // Join the words back into a string
-        return implode(' ', $words);
-    }
-
-    public function capitalize($str)
-    {
-        return ucwords(Str::lower($str));
-    }
-
-    public function swapCase($string)
-    {
-        for ($i = 0; $i < strlen($string); $i++) {
-            $char = ord($string[$i]);
-            if (($char > 64 && $char < 91) || ($char > 96 && $char < 123)) {
-                $string[$i] = chr($char ^ 32);
-            }
-        }
-        return $string;
-    }
-
-    public function reverseText($str)
-    {
-        return strrev($str);
-    }
-
-    public function removeAccents($string)
-    {
-        if (!preg_match('/[\x80-\xff]/', $string))
-            return $string;
-
-        $chars = array(
+    private static function accentLibrary () {
+        return [
             // Decompositions for Latin-1 Supplement
             chr(195) . chr(128) => 'A', chr(195) . chr(129) => 'A',
             chr(195) . chr(130) => 'A', chr(195) . chr(131) => 'A',
@@ -162,7 +149,69 @@ class TextTools
             chr(197) . chr(186) => 'z', chr(197) . chr(187) => 'Z',
             chr(197) . chr(188) => 'z', chr(197) . chr(189) => 'Z',
             chr(197) . chr(190) => 'z', chr(197) . chr(191) => 's'
-        );
+        ];
+    }
+
+    public function lowerCase($str)
+    {
+        return Str::lower($str);
+    }
+
+    public function upperCase($str)
+    {
+        return Str::upper($str);
+    }
+
+    public function titleCase($str)
+    {
+        $smallWordsArray = array('of', 'a', 'the', 'and', 'an', 'or', 'nor', 'but', 'is', 'if', 'then', 'else', 'when', 'at', 'from', 'by', 'on', 'off', 'for', 'in', 'to', 'into', 'with', 'it', 'as');
+
+        $str = strtolower($str);
+        // Split the string into separate words
+        $words = explode(' ', $str);
+
+        foreach ($words as $key => $word) {
+
+            // If this word is the first, or it's not one of our small words, capitalise it
+            // with ucwords().
+            if ($key == 0 or !in_array(strip_tags($word), $smallWordsArray)) {
+                $old = strip_tags($word);
+                $new = ucfirst($old);
+                $words[$key] = str_replace($old, $new, $word);
+            }
+        }
+
+        // Join the words back into a string
+        return implode(' ', $words);
+    }
+
+    public function capitalize($str)
+    {
+        return ucwords(Str::lower($str));
+    }
+
+    public function swapCase($string)
+    {
+        for ($i = 0; $i < strlen($string); $i++) {
+            $char = ord($string[$i]);
+            if (($char > 64 && $char < 91) || ($char > 96 && $char < 123)) {
+                $string[$i] = chr($char ^ 32);
+            }
+        }
+        return $string;
+    }
+
+    public function reverseText($str)
+    {
+        return strrev($str);
+    }
+
+    public function removeAccents($string)
+    {
+        if (!preg_match('/[\x80-\xff]/', $string))
+            return $string;
+
+        $chars = static::accentLibrary();
 
         $string = strtr($string, $chars);
 
@@ -219,5 +268,35 @@ class TextTools
         preg_match_all('!\d+\.*\d*!', $string, $matches);
 
         return implode("\n", $matches[0]);
+    }
+
+    public function morseToText($morse) {
+        $chars = explode(' ', $morse);
+    
+        $text = '';
+        foreach ($chars as $char) {
+          if (isset(static::$mosreLibrary[$char])) {
+            $text .= static::$mosreLibrary[$char];
+          }
+        }
+        return strtolower($text);
+    }
+
+    public function textToMorse($text) {
+        if (empty($text))
+            return '';
+
+        $chars = str_split(strtoupper($text));
+        $latinToMorseLib = array_flip(static::$mosreLibrary);
+    
+        $morseString = '';
+        foreach ($chars as $char) {
+          if (isset($latinToMorseLib[$char])) {
+            $morseString .= $latinToMorseLib[$char];
+          }
+          $morseString .= ' ';
+        }
+    
+        return $morseString;
     }
 }

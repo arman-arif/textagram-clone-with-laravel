@@ -34,6 +34,8 @@
             <button wire:click="extractEmails" class="btn btn-primary">Extract Emails</button>
             <button wire:click="extractURLs" class="btn btn-primary">Extract URLs</button>
             <button wire:click="extractNumbers" class="btn btn-primary">Extract Numbers</button>
+            <button wire:click="textToMorse" class="btn btn-primary">Text to Morse</button>
+            <button wire:click="morseToText" class="btn btn-primary">Morse to Text</button>
         </div>
     </div>
 
