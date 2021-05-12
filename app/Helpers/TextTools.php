@@ -231,12 +231,12 @@ class TextTools
 
     public function spacesToNewlines($string)
     {
-        return str_replace(' ', '\n', $string);
+        return str_replace(' ', "\n", $string);
     }
 
     public function newlinesToSpaces($string)
     {
-        return str_replace('\n', ' ', $string);
+        return str_replace("\n", ' ', $string);
     }
 
     public function removeExtraWhiteSpace($string)
@@ -253,7 +253,7 @@ class TextTools
     {
         preg_match_all('/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i', $string, $matches);
 
-        return implode('\n', $matches[0]);
+        return implode("\n", $matches[0]);
     }
 
     public function extractURLs($string)
@@ -261,14 +261,14 @@ class TextTools
         // preg_match_all('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $string, $matches);
         preg_match_all('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', $string, $matches);
 
-        return implode('\n', $matches[0]);
+        return implode("\n", $matches[0]);
     }
 
     public function extractNumbers($string)
     {
         preg_match_all('!\d+\.*\d*!', $string, $matches);
 
-        return implode('\n', $matches[0]);
+        return implode("\n", $matches[0]);
     }
 
     public function morseToText($morse)
@@ -305,6 +305,12 @@ class TextTools
 
     public function countCharFreq($text)
     {
-        return implode('\n', count_chars($text));
+        $freqArray = count_chars($text, 1);
+        $freqStr = '';
+        foreach ($freqArray as $key => $value) {
+            $char = chr($key);
+            $freqStr .= "${char} : ${value}\n";
+        }
+        return $freqStr;
     }
 }
