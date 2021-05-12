@@ -116,6 +116,11 @@ class TextTools extends Component
         $this->string = Tools::text()->textToMorse($this->string);
     }
 
+    public function countCharFreq()
+    {
+        $this->string = Tools::text()->countCharFreq($this->string);
+    }
+
     public function render()
     {
         return view('livewire.text-tools');

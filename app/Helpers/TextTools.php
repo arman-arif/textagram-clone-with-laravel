@@ -53,7 +53,8 @@ class TextTools
         '  '     => ' '
     );
 
-    private static function accentLibrary () {
+    private static function accentLibrary()
+    {
         return [
             // Decompositions for Latin-1 Supplement
             chr(195) . chr(128) => 'A', chr(195) . chr(129) => 'A',
@@ -220,22 +221,22 @@ class TextTools
 
     public function spacesToTabs($string)
     {
-        return str_replace(" ", "\t", $string);
+        return str_replace(' ', '\t', $string);
     }
 
     public function tabsToSpaces($string)
     {
-        return str_replace("\t", " ", $string);
+        return str_replace('\t', ' ', $string);
     }
 
     public function spacesToNewlines($string)
     {
-        return str_replace(" ", "\n", $string);
+        return str_replace(' ', '\n', $string);
     }
 
     public function newlinesToSpaces($string)
     {
-        return str_replace("\n", " ", $string);
+        return str_replace('\n', ' ', $string);
     }
 
     public function removeExtraWhiteSpace($string)
@@ -250,9 +251,9 @@ class TextTools
 
     public function extractEmails($string)
     {
-        preg_match_all("/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i", $string, $matches);
+        preg_match_all('/[\._a-zA-Z0-9-]+@[\._a-zA-Z0-9-]+/i', $string, $matches);
 
-        return implode("\n", $matches[0]);
+        return implode('\n', $matches[0]);
     }
 
     public function extractURLs($string)
@@ -260,43 +261,50 @@ class TextTools
         // preg_match_all('#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $string, $matches);
         preg_match_all('/\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|$!:,.;]*[A-Z0-9+&@#\/%=~_|$]/i', $string, $matches);
 
-        return implode("\n", $matches[0]);
+        return implode('\n', $matches[0]);
     }
 
     public function extractNumbers($string)
     {
         preg_match_all('!\d+\.*\d*!', $string, $matches);
 
-        return implode("\n", $matches[0]);
+        return implode('\n', $matches[0]);
     }
 
-    public function morseToText($morse) {
+    public function morseToText($morse)
+    {
         $chars = explode(' ', $morse);
-    
+
         $text = '';
         foreach ($chars as $char) {
-          if (isset(static::$mosreLibrary[$char])) {
-            $text .= static::$mosreLibrary[$char];
-          }
+            if (isset(static::$mosreLibrary[$char])) {
+                $text .= static::$mosreLibrary[$char];
+            }
         }
         return strtolower($text);
     }
 
-    public function textToMorse($text) {
+    public function textToMorse($text)
+    {
         if (empty($text))
             return '';
 
         $chars = str_split(strtoupper($text));
         $latinToMorseLib = array_flip(static::$mosreLibrary);
-    
+
         $morseString = '';
         foreach ($chars as $char) {
-          if (isset($latinToMorseLib[$char])) {
-            $morseString .= $latinToMorseLib[$char];
-          }
-          $morseString .= ' ';
+            if (isset($latinToMorseLib[$char])) {
+                $morseString .= $latinToMorseLib[$char];
+            }
+            $morseString .= ' ';
         }
-    
+
         return $morseString;
+    }
+
+    public function countCharFreq($text)
+    {
+        return implode('\n', count_chars($text));
     }
 }

@@ -37,6 +37,9 @@
             <button wire:click="textToMorse" class="btn btn-primary">Text to Morse</button>
             <button wire:click="morseToText" class="btn btn-primary">Morse to Text</button>
         </div>
+        <div class="mb-2">
+            <button wire:click="countCharFreq" class="btn btn-primary">Count Character Frequency</button>
+        </div>
     </div>
 
 </div>
