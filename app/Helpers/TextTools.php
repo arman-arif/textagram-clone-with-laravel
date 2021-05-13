@@ -153,6 +153,24 @@ class TextTools
         ];
     }
 
+    public static function encodeStrToUnicode($dat)
+   {
+      if (is_string($dat)) {
+         return utf8_encode($dat);
+      } elseif (is_array($dat)) {
+         $ret = [];
+         foreach ($dat as $i => $d) $ret[ $i ] = self::convert_from_latin1_to_utf8_recursively($d);
+
+         return $ret;
+      } elseif (is_object($dat)) {
+         foreach ($dat as $i => $d) $dat->$i = self::convert_from_latin1_to_utf8_recursively($d);
+
+         return $dat;
+      } else {
+         return $dat;
+      }
+   }
+
     public function lowerCase($str)
     {
         return Str::lower($str);
@@ -204,7 +222,13 @@ class TextTools
 
     public function reverseText($str)
     {
-        return strrev($str);
+        // $length = strlen($str);
+        // $revStr = '';
+        // for ($i=$length-1; $i >= 0; $i--) { 
+        //     $revStr .= $str[$i];
+        // }
+        // return $revStr;
+        return strrev(static::encodeStrToUnicode($str)); //mb_convert_encoding($str, 'UTF-8', 'UTF-8')
     }
 
     public function removeAccents($string)
@@ -221,12 +245,12 @@ class TextTools
 
     public function spacesToTabs($string)
     {
-        return str_replace(' ', '\t', $string);
+        return str_replace(' ', "\t", $string);
     }
 
     public function tabsToSpaces($string)
     {
-        return str_replace('\t', ' ', $string);
+        return str_replace("\t", ' ', $string);
     }
 
     public function spacesToNewlines($string)
@@ -312,5 +336,14 @@ class TextTools
             $freqStr .= "${char} : ${value}\n";
         }
         return $freqStr;
+    }
+
+    public function countWordFreq($text) {
+       $wordArray = array_count_values(str_word_count($text, 1));
+       $wordStr = '';
+       foreach ($wordArray as $key => $value) {
+           $wordStr .= "${key} : ${value}" . PHP_EOL;
+       }
+       return $wordStr;
     }
 }

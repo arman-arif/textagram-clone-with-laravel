@@ -7,10 +7,10 @@
             placeholder="Paste text here..."></textarea>
     </label>
     <p>
-        Total Character: {{ $stringCharCount }} |
-        Total Words: {{ $stringWordCount }} |
-        Total Line: {{ $stringLineCount }} |
-        Total Paragraphs: {{ $stringParaCount }}
+        Total Character: {{ $charCount }} |
+        Total Words: {{ $wordCount }} |
+        Total Line: {{ $lineCount }} |
+        Total Paragraphs: {{ $paraCount }}
     </p>
     <div class="my-2">
         <div class="mb-2">
@@ -39,7 +39,9 @@
         </div>
         <div class="mb-2">
             <button wire:click="countCharFreq" class="btn btn-primary">Count Character Frequency</button>
+            <button wire:click="countWordFreq" class="btn btn-primary">Count Word Frequency</button>
         </div>
+        <button wire:click="resetClear" class="btn btn-danger">Clear</button>
     </div>
 
 </div>

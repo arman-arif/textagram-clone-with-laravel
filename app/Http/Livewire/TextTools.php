@@ -9,21 +9,32 @@ class TextTools extends Component
 {
     public $string = '';
 
-    public $stringCharCount = 0;
+    public $charCount = 0;
 
-    public $stringWordCount = 0;
+    public $wordCount = 0;
 
-    public $stringLineCount = 0;
+    public $lineCount = 0;
 
-    public $stringParaCount = 0;
+    public $paraCount = 0;
 
     public function updatedString()
     {
-        $this->stringCharCount = strlen($this->string);
-        $this->stringWordCount = str_word_count($this->string);
-        // $this->stringLineCount = substr_count($this->string, "\n");
-        $this->stringLineCount = count(explode("\n", $this->string));
-        $this->stringParaCount = substr_count($this->string, "\n\n");
+        $this->string = mb_convert_encoding($this->string, 'UTF-8', 'UTF-8');
+        $this->charCount = strlen($this->string);
+        $this->wordCount = str_word_count($this->string);
+        // $this->lineCount = substr_count($this->string, "\n");
+        $this->lineCount = empty($this->string) ? 0 : count(explode("\n", $this->string));
+        // $this->paraCount = substr_count($this->string, "\n\n");
+        $this->paraCount = empty($this->string) ? 0 : count(explode("\n\n", $this->string));
+    }
+
+    public function resetClear()
+    {
+        $this->string = '';
+        $this->charCount = 0;
+        $this->wordCount = 0;
+        $this->lineCount = 0;
+        $this->paraCount = 0;
     }
 
     public function getLower()
@@ -119,6 +130,11 @@ class TextTools extends Component
     public function countCharFreq()
     {
         $this->string = Tools::text()->countCharFreq($this->string);
+    }
+
+    public function countWordFreq()
+    {
+        $this->string = Tools::text()->countWordFreq($this->string);
     }
 
     public function render()
